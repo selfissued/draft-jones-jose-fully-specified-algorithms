@@ -1,0 +1,450 @@
+
+
+
+
+JOSE Working Group                                            M.B. Jones
+Internet-Draft                                               independent
+Updates: 7518, 8037, 9053 (if approved)                        O. Steele
+Intended status: Standards Track                               Transmute
+Expires: 3 March 2024                                     31 August 2023
+
+
+              Fully-Specified Algorithms for JOSE and COSE
+           draft-jones-jose-fully-specified-algorithms-latest
+
+Abstract
+
+   This specification refers to cryptographic algorithm identifiers that
+   fully specify the cryptographic operations to be performed, including
+   any curve, key derivation function (KDF), hash functions, etc., as
+   being "fully specified".  Whereas, it refers to cryptographic
+   algorithm identifiers that require additional information beyond the
+   algorithm identifier to determine the cryptographic operations to be
+   performed as being "polymorphic".  This specification creates fully-
+   specified algorithm identifiers for all registered JOSE and COSE
+   polymorphic algorithm identifiers, enabling applications to use only
+   fully-specified algorithm identifiers.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 3 March 2024.
+
+Copyright Notice
+
+   Copyright (c) 2023 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+     1.1.  Requirements Notation and Conventions
+   2.  Fully-specified Digital Signature Algorithm Identifiers
+     2.1.  Elliptic Curve Digital Signature Algorithm (ECDSA)
+     2.2.  Edwards-Curve Digital Signature Algorithm (EdDSA)
+   3.  IANA Considerations
+     3.1.  JOSE Algorithms Registrations
+       3.1.1.  Fully-Specified JOSE Algorithm Registrations
+       3.1.2.  Deprecated Polymorphic JOSE Algorithm Registrations
+     3.2.  COSE Algorithms Registrations
+       3.2.1.  Fully-Specified COSE Algorithm Registrations
+       3.2.2.  Deprecated Polymorphic COSE Algorithm Registrations
+     3.3.  Updated Review Instructions for Designated Experts
+   4.  Security Considerations
+   5.  To Do
+   6.  References
+     6.1.  Normative References
+     6.2.  Informative References
+   Appendix A.  Document History
+   Acknowledgements
+   Authors' Addresses
+
+1.  Introduction
+
+   The IANA algorithm registries for JOSE [IANA.JOSE.Algorithms] and
+   COSE [IANA.COSE.Algorithms] contain two kinds of algorithm
+   identifiers:
+
+   Fully Specified
+      Those that fully determine the cryptographic operations to be
+      performed, including any curve, key derivation function (KDF),
+      hash functions, etc.  Examples are RS256 and ES256K in both JOSE
+      and COSE and ES256 in JOSE.
+
+   Polymorphic
+      Those requiring information beyond the algorithm identifier to
+      determine the cryptographic operations to be performed.  Such
+      additional information could include the actual key value and a
+      curve that it uses.  Examples are EdDSA in both JOSE and COSE and
+      ES256 in COSE.
+
+   This matters because many protocols negotiate supported operations
+   using only algorithm identifiers.  For instance, OAuth Authorization
+   Server Metadata [RFC8414] uses negotiation parameters like these
+   (from an example in the specification):
+
+  "token_endpoint_auth_signing_alg_values_supported": ["RS256", "ES256"]
+
+   OpenID Connect Discovery [OpenID.Discovery] likewise negotiates
+   supported algorithms using alg and enc values.  W3C Web
+   Authentication [WebAuthn] and FIDO Client to Authenticator Protocol
+   (CTAP) [FIDO2] negotiate using COSE alg numbers.
+
+   This does not work for polymorphic algorithms.  For instance, with
+   EdDSA, you do not know which of the curves Ed25519 and/or Ed448 are
+   supported!  This causes real problems in practice.
+
+   WebAuthn contains this de-facto algorithm definition to work around
+   this problem:
+
+     -8 (EdDSA), where crv is 6 (Ed25519)
+
+   This redefines the COSE EdDSA algorithm identifier for the purposes
+   of WebAuthn to restrict it to using the Ed25519 curve - making it
+   non-polymorphic so that algorithm negotiation can succeed, but also
+   effectively eliminating the possibility of using Ed448.  Other
+   similar workarounds for polymorphic algorithm identifiers are used in
+   practice.
+
+   This specification creates fully-specified algorithm identifiers for
+   all registered polymorphic JOSE and COSE algorithms and their
+   parameters, enabling applications to use only fully-specified
+   algorithm identifiers.  It furthermore deprecates the practice of
+   registering polymorphic algorithm identifiers.
+
+1.1.  Requirements Notation and Conventions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+2.  Fully-specified Digital Signature Algorithm Identifiers
+
+   This section creates fully-specified digital signature algorithm
+   identifiers for all registered polymorphic JOSE and COSE algorithms
+   and their parameters.
+
+2.1.  Elliptic Curve Digital Signature Algorithm (ECDSA)
+
+   [RFC9053] defines the current use of the Elliptic Curve Digital
+   Signature Algorithm (ECDSA) by COSE.  The COSE algorithm
+   registrations for ECDSA are polymorphic, since they do not specify
+   the curve used.  For instance, ES256 is defined as "ECDSA w/ SHA-256"
+   in Section 2.1 of [RFC9053].  (The corresponding JOSE registrations
+   in [RFC7518] are full-specified.)
+
+   The following fully-specified COSE algorithms are defined:
+
+    +========+=================+===================+==================+
+    | Name   | COSE Value      | Description       | COSE Recommended |
+    +========+=================+===================+==================+
+    | ESP256 | TBD (requested  | ECDSA using P-256 | Yes              |
+    |        | assignment -9)  | curve and SHA-256 |                  |
+    +--------+-----------------+-------------------+------------------+
+    | ESP384 | TBD (requested  | ECDSA using P-384 | Yes              |
+    |        | assignment -48) | curve and SHA-384 |                  |
+    +--------+-----------------+-------------------+------------------+
+    | ESP512 | TBD (requested  | ECDSA using P-521 | Yes              |
+    |        | assignment -49) | curve and SHA-512 |                  |
+    +--------+-----------------+-------------------+------------------+
+
+                      Table 1: ECDSA Algorithm Values
+
+2.2.  Edwards-Curve Digital Signature Algorithm (EdDSA)
+
+   [RFC8037] defines the current use of the Edwards-Curve Digital
+   Signature Algorithm (EdDSA) by JOSE and [RFC9053] defines its current
+   use by COSE.  Both register polymorphic EdDSA algorithm identifiers.
+
+   The following fully-specified JOSE and COSE algorithms are defined:
+
+    +=======+============+=============+================+=============+
+    |Name   | COSE Value | Description | JOSE           | COSE        |
+    |       |            |             | Implementation | Recommended |
+    |       |            |             | Requirements   |             |
+    +=======+============+=============+================+=============+
+    |Ed25519| TBD        | EdDSA using | Optional       | No          |
+    |       | (requested | Ed25519     |                |             |
+    |       | assignment | curve       |                |             |
+    |       | -50)       |             |                |             |
+    +-------+------------+-------------+----------------+-------------+
+    |Ed448  | TBD        | EdDSA using | Optional       | No          |
+    |       | (requested | Ed448 curve |                |             |
+    |       | assignment |             |                |             |
+    |       | -51)       |             |                |             |
+    +-------+------------+-------------+----------------+-------------+
+
+                      Table 2: EdDSA Algorithm Values
+
+3.  IANA Considerations
+
+3.1.  JOSE Algorithms Registrations
+
+   This section registers the following values in the IANA "JSON Web
+   Signature and Encryption Algorithms" registry [IANA.JOSE.Algorithms].
+
+3.1.1.  Fully-Specified JOSE Algorithm Registrations
+
+   *  Algorithm Name: Ed25519
+   *  Algorithm Description: EdDSA using Ed25519 curve
+   *  Algorithm Usage Locations: alg
+   *  JOSE Implementation Requirements: Optional
+   *  Change Controller: IESG
+   *  Reference: Section 2.2 of [[ this specification ]]
+   *  Algorithm Analysis Document(s): [RFC8032]
+
+
+   *  Algorithm Name: Ed448
+   *  Algorithm Description: EdDSA using Ed448 curve
+   *  Algorithm Usage Locations: alg
+   *  JOSE Implementation Requirements: Optional
+   *  Change Controller: IESG
+   *  Reference: Section 2.2 of [[ this specification ]]
+   *  Algorithm Analysis Document(s): [RFC8032]
+
+3.1.2.  Deprecated Polymorphic JOSE Algorithm Registrations
+
+   The following registration is updated to change its status to
+   Deprecated.
+
+   *  Algorithm Name: EdDSA
+   *  Algorithm Description: EdDSA signature algorithms
+   *  Algorithm Usage Locations: alg
+   *  JOSE Implementation Requirements: Deprecated
+   *  Change Controller: IESG
+   *  Reference: Section 3.1 of RFC8037
+   *  Algorithm Analysis Document(s): [RFC8032]
+
+3.2.  COSE Algorithms Registrations
+
+   This section registers the following values in the IANA "COSE
+   Algorithms" registry [IANA.COSE.Algorithms].
+
+3.2.1.  Fully-Specified COSE Algorithm Registrations
+
+   *  Name: ESP256
+   *  Value: TBD (requested assignment -9)
+   *  Description: ECDSA using P-256 curve and SHA-256
+   *  Reference: Section 2.1 of this document
+   *  Recommended: Yes
+
+
+   *  Name: ESP384
+   *  Value: TBD (requested assignment -48)
+   *  Description: ECDSA using P-384 curve and SHA-384
+   *  Reference: Section 2.1 of this document
+   *  Recommended: Yes
+
+
+   *  Name: ESP512
+   *  Value: TBD (requested assignment -49)
+   *  Description: ECDSA using P-521 curve and SHA-512
+   *  Reference: Section 2.1 of this document
+   *  Recommended: Yes
+
+
+   *  Name: Ed25519
+   *  Value: TBD (requested assignment -50)
+   *  Description: EdDSA using Ed25519 curve
+   *  Reference: Section 2.2 of this document
+   *  Recommended: Yes
+
+
+   *  Name: Ed448
+   *  Value: TBD (requested assignment -51)
+   *  Description: EdDSA using Ed448 curve
+   *  Reference: Section 2.2 of this document
+   *  Recommended: Yes
+
+3.2.2.  Deprecated Polymorphic COSE Algorithm Registrations
+
+   The following registrations are updated to change their status to
+   Deprecated.
+
+   *  Name: ES256
+   *  Value: -7
+   *  Description: ECDSA w/ SHA-256
+   *  Reference: RFC 9053
+   *  Recommended: Deprecated
+
+
+   *  Name: ES384
+   *  Value: -35
+   *  Description: ECDSA w/ SHA-384
+   *  Reference: RFC 9053
+   *  Recommended: Deprecated
+
+
+   *  Name: ES512
+   *  Value: -36
+   *  Description: ECDSA w/ SHA-512
+   *  Reference: RFC 9053
+   *  Recommended: Deprecated
+
+
+   *  Name: EdDSA
+   *  Value: -8
+   *  Description: EdDSA
+   *  Reference: RFC 9053
+   *  Recommended: Deprecated
+
+3.3.  Updated Review Instructions for Designated Experts
+
+   The review instructions for the designated experts for the IANA "JSON
+   Web Signature and Encryption Algorithms" registry
+   [IANA.JOSE.Algorithms] in Section 7.1 of [RFC7518] are updated to add
+   this additional review criterion:
+
+   *  Registration requests for polymorphic algorithm identifiers must
+      not be accepted; only fully-specified algorithm identifiers may be
+      registered going forward.
+
+   The review instructions for the designated experts for the IANA "COSE
+   Algorithms" registry [IANA.COSE.Algorithms] in Section 10.4 of
+   [RFC9053] are also updated to add the same additional review
+   criterion.
+
+4.  Security Considerations
+
+   Using fully-specified algorithm identifiers reduces the attack
+   surface relative to using polymorphic algorithm identifiers, since it
+   reduces the opportunity for attackers to choose algorithms.
+
+   The security considerations for ECDSA in [RFC7518], for EdDSA in
+   [RFC8037], and for ECDSA and EdDSA in [RFC9053] apply.
+
+5.  To Do
+
+   Future versions of this specification may cover these additional
+   topics:
+
+   *  State that key representations for the new fully-specified
+      algorithms are the same as for the polymorphic algorithms that
+      they replaced, other than the alg value, if included.
+
+   *  What other polymorphic algorithm registrations have we missed?
+
+   *  Discuss why varying RSA key sizes don't necessitate per-key-size
+      algorithm identifiers.
+
+   *  Discuss the treatment of EDCH-ES and its ephemeral keys.
+
+6.  References
+
+6.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC8037]  Liusvaara, I., "CFRG Elliptic Curve Diffie-Hellman (ECDH)
+              and Signatures in JSON Object Signing and Encryption
+              (JOSE)", RFC 8037, DOI 10.17487/RFC8037, January 2017,
+              <https://www.rfc-editor.org/info/rfc8037>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [RFC9053]  Schaad, J., "CBOR Object Signing and Encryption (COSE):
+              Initial Algorithms", RFC 9053, DOI 10.17487/RFC9053,
+              August 2022, <https://www.rfc-editor.org/info/rfc9053>.
+
+6.2.  Informative References
+
+   [FIDO2]    Bradley, J., Hodges, J., Jones, M., Kumar, A., and J.
+              Johan, "Client to Authenticator Protocol (CTAP)", FIDO
+              Alliance Proposed Standard, 15 June 2021,
+              <https://fidoalliance.org/specs/fido-v2.1-ps-20210615/
+              fido-client-to-authenticator-protocol-v2.1-ps-
+              20210615.html>.
+
+   [IANA.COSE.Algorithms]
+              IANA, "COSE Algorithms",
+              <https://www.iana.org/assignments/cose/
+              cose.xhtml#algorithms>.
+
+   [IANA.JOSE.Algorithms]
+              IANA, "JOSE Algorithms",
+              <https://www.iana.org/assignments/jose/jose.xhtml#web-
+              signature-encryption-algorithms>.
+
+   [OpenID.Discovery]
+              Sakimura, N., Bradley, J., Jones, M.B., and E. Jay,
+              "OpenID Connect Discovery 1.0", 8 November 2014,
+              <https://openid.net/specs/openid-connect-discovery-
+              1_0.html>.
+
+   [RFC7518]  Jones, M., "JSON Web Algorithms (JWA)", RFC 7518,
+              DOI 10.17487/RFC7518, May 2015,
+              <https://www.rfc-editor.org/info/rfc7518>.
+
+   [RFC8032]  Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
+              Signature Algorithm (EdDSA)", RFC 8032,
+              DOI 10.17487/RFC8032, January 2017,
+              <https://www.rfc-editor.org/info/rfc8032>.
+
+   [RFC8414]  Jones, M., Sakimura, N., and J. Bradley, "OAuth 2.0
+              Authorization Server Metadata", RFC 8414,
+              DOI 10.17487/RFC8414, June 2018,
+              <https://www.rfc-editor.org/info/rfc8414>.
+
+   [WebAuthn] Hodges, J., Jones, J.C., Jones, M., Kumar, A., and E.
+              Lundberg, "Web Authentication: An API for accessing Public
+              Key Credentials - Level 2", World Wide Web Consortium
+              (W3C) Recommendation, 8 April 2021,
+              <https://www.w3.org/TR/2021/REC-webauthn-2-20210408/>.
+
+Appendix A.  Document History
+
+   [[ to be removed by the RFC Editor before publication as an RFC ]]
+
+   -01
+
+   *  Renamed ES25519 to Ed25519 and ES448 to Ed448, by popular demand!
+
+   -00
+
+   *  Initial version.
+
+Acknowledgements
+
+   The authors thank John Bradley, Brian Campbell, Ilari Liusvarra,
+   Tobias Looker, and Filip Skokan for their contributions to this
+   specification.
+
+Authors' Addresses
+
+   Michael B. Jones
+   independent
+   Email: michael_b_jones@hotmail.com
+   URI:   https://self-issued.info/
+
+
+   Orie Steele
+   Transmute
+   Email: orie@transmute.industries
