@@ -63,18 +63,18 @@ Table of Contents
    2.  Fully-specified Digital Signature Algorithm Identifiers
      2.1.  Elliptic Curve Digital Signature Algorithm (ECDSA)
      2.2.  Edwards-Curve Digital Signature Algorithm (EdDSA)
-   3.  Key Representations
-   4.  Notes on Algorithms Not Updated
-     4.1.  Algorithms for Signing with RSASSA-PKCS1-v1_5
-     4.2.  ECDH-ES and its Ephemeral Keys
-   5.  IANA Considerations
-     5.1.  JOSE Algorithms Registrations
-       5.1.1.  Fully-Specified JOSE Algorithm Registrations
-       5.1.2.  Deprecated Polymorphic JOSE Algorithm Registrations
-     5.2.  COSE Algorithms Registrations
-       5.2.1.  Fully-Specified COSE Algorithm Registrations
-       5.2.2.  Deprecated Polymorphic COSE Algorithm Registrations
-     5.3.  Updated Review Instructions for Designated Experts
+   3.  IANA Considerations
+     3.1.  JOSE Algorithms Registrations
+       3.1.1.  Fully-Specified JOSE Algorithm Registrations
+       3.1.2.  Deprecated Polymorphic JOSE Algorithm Registrations
+     3.2.  COSE Algorithms Registrations
+       3.2.1.  Fully-Specified COSE Algorithm Registrations
+       3.2.2.  Deprecated Polymorphic COSE Algorithm Registrations
+     3.3.  Updated Review Instructions for Designated Experts
+   4.  Key Representations
+   5.  Notes on Algorithms Not Updated
+     5.1.  Algorithms for Signing with RSASSA-PKCS1-v1_5
+     5.2.  ECDH-ES and its Ephemeral Keys
    6.  Security Considerations
    7.  References
      7.1.  Normative References
@@ -202,63 +202,14 @@ Table of Contents
 
                       Table 2: EdDSA Algorithm Values
 
-3.  Key Representations
+3.  IANA Considerations
 
-   The key representations for the new fully-specified algorithms
-   defined by this specification are the same as those for the
-   polymorphic algorithms that they replace, other than the alg value,
-   if included.  For instance, the representation for a key used with
-   the Ed25519 algorithm is the same as that specified in [RFC8037],
-   except that the alg value would be Ed25519 rather than EdDSA, if
-   included.
-
-4.  Notes on Algorithms Not Updated
-
-   The working group has discussed some existing algorithms that are not
-   updated by this specification.  This section discusses why they have
-   not been updated.
-
-4.1.  Algorithms for Signing with RSASSA-PKCS1-v1_5
-
-   The working group has discussed whether the RS256, RS384, and RS512
-   algorithms should be considered fully-specified or not, because they
-   can operate on keys of different sizes.  For instance, they can use
-   both 2048- and 4096-bit keys.  The same is true of the PS*
-   algorithms.
-
-   This is not a problem in practice, because RSA libraries accomodate
-   keys of different sizes without having to use different code.
-   Therefore, for example, there are not known cases in the wild where
-   it would be useful to have different algorithm identifiers for
-   RSASSA-PKCS1-v1_5 with SHA-256 and 2048-bit keys and RSASSA-
-   PKCS1-v1_5 with SHA-256 and 4096-bit keys or 8192-bit keys.
-   Therefore, the RSA signature algorithms are not replaced by this
-   specification.
-
-4.2.  ECDH-ES and its Ephemeral Keys
-
-   The working group has discussed whether the ECDH-ES key agreement
-   algorithm should be considered fully-specified or not, because it can
-   use ephemeral keys of different key types and algorithms.  Indeed, an
-   implementation might work when ECDH-ES is used with a ephemeral keys
-   using the P-256 curve, and not work when used with ephemeral keys
-   using the Ed25519 curve.
-
-   One way that protocols can handle this situation is to use a
-   discovery mechanism to declare what ephemeral key types are
-   supported.  The alternative would be to introduce new fully-specified
-   algorithm identifiers for choices such as "ECDH-ES with the P-256
-   Curve", etc.  Feedback from deployers would be useful in determining
-   what actions this specification should take in this case.
-
-5.  IANA Considerations
-
-5.1.  JOSE Algorithms Registrations
+3.1.  JOSE Algorithms Registrations
 
    This section registers the following values in the IANA "JSON Web
    Signature and Encryption Algorithms" registry [IANA.JOSE.Algorithms].
 
-5.1.1.  Fully-Specified JOSE Algorithm Registrations
+3.1.1.  Fully-Specified JOSE Algorithm Registrations
 
    *  Algorithm Name: Ed25519
    *  Algorithm Description: EdDSA using Ed25519 curve
@@ -277,7 +228,7 @@ Table of Contents
    *  Reference: Section 2.2 of [[ this specification ]]
    *  Algorithm Analysis Document(s): [RFC8032]
 
-5.1.2.  Deprecated Polymorphic JOSE Algorithm Registrations
+3.1.2.  Deprecated Polymorphic JOSE Algorithm Registrations
 
    The following registration is updated to change its status to
    Deprecated.
@@ -290,12 +241,12 @@ Table of Contents
    *  Reference: Section 3.1 of RFC8037
    *  Algorithm Analysis Document(s): [RFC8032]
 
-5.2.  COSE Algorithms Registrations
+3.2.  COSE Algorithms Registrations
 
    This section registers the following values in the IANA "COSE
    Algorithms" registry [IANA.COSE.Algorithms].
 
-5.2.1.  Fully-Specified COSE Algorithm Registrations
+3.2.1.  Fully-Specified COSE Algorithm Registrations
 
    *  Name: ESP256
    *  Value: TBD (requested assignment -9)
@@ -331,7 +282,7 @@ Table of Contents
    *  Reference: Section 2.2 of this document
    *  Recommended: Yes
 
-5.2.2.  Deprecated Polymorphic COSE Algorithm Registrations
+3.2.2.  Deprecated Polymorphic COSE Algorithm Registrations
 
    The following registrations are updated to change their status to
    Deprecated.
@@ -363,7 +314,7 @@ Table of Contents
    *  Reference: RFC 9053
    *  Recommended: Deprecated
 
-5.3.  Updated Review Instructions for Designated Experts
+3.3.  Updated Review Instructions for Designated Experts
 
    The review instructions for the designated experts for the IANA "JSON
    Web Signature and Encryption Algorithms" registry
@@ -378,6 +329,55 @@ Table of Contents
    Algorithms" registry [IANA.COSE.Algorithms] in Section 10.4 of
    [RFC9053] are also updated to add the same additional review
    criterion.
+
+4.  Key Representations
+
+   The key representations for the new fully-specified algorithms
+   defined by this specification are the same as those for the
+   polymorphic algorithms that they replace, other than the alg value,
+   if included.  For instance, the representation for a key used with
+   the Ed25519 algorithm is the same as that specified in [RFC8037],
+   except that the alg value would be Ed25519 rather than EdDSA, if
+   included.
+
+5.  Notes on Algorithms Not Updated
+
+   The working group has discussed some existing algorithms that are not
+   updated by this specification.  This section discusses why they have
+   not been updated.
+
+5.1.  Algorithms for Signing with RSASSA-PKCS1-v1_5
+
+   The working group has discussed whether the RS256, RS384, and RS512
+   algorithms should be considered fully-specified or not, because they
+   can operate on keys of different sizes.  For instance, they can use
+   both 2048- and 4096-bit keys.  The same is true of the PS*
+   algorithms.
+
+   This is not a problem in practice, because RSA libraries accomodate
+   keys of different sizes without having to use different code.
+   Therefore, for example, there are not known cases in the wild where
+   it would be useful to have different algorithm identifiers for
+   RSASSA-PKCS1-v1_5 with SHA-256 and 2048-bit keys and RSASSA-
+   PKCS1-v1_5 with SHA-256 and 4096-bit keys or 8192-bit keys.
+   Therefore, the RSA signature algorithms are not replaced by this
+   specification.
+
+5.2.  ECDH-ES and its Ephemeral Keys
+
+   The working group has discussed whether the ECDH-ES key agreement
+   algorithm should be considered fully-specified or not, because it can
+   use ephemeral keys of different key types and algorithms.  Indeed, an
+   implementation might work when ECDH-ES is used with a ephemeral keys
+   using the P-256 curve, and not work when used with ephemeral keys
+   using the Ed25519 curve.
+
+   One way that protocols can handle this situation is to use a
+   discovery mechanism to declare what ephemeral key types are
+   supported.  The alternative would be to introduce new fully-specified
+   algorithm identifiers for choices such as "ECDH-ES with the P-256
+   Curve", etc.  Feedback from deployers would be useful in determining
+   what actions this specification should take in this case.
 
 6.  Security Considerations
 
