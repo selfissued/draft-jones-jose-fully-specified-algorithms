@@ -6,7 +6,7 @@ JOSE Working Group                                            M.B. Jones
 Internet-Draft                                               independent
 Updates: 7518, 8037, 9053 (if approved)                        O. Steele
 Intended status: Standards Track                               Transmute
-Expires: 3 March 2024                                     31 August 2023
+Expires: 22 April 2024                                   20 October 2023
 
 
               Fully-Specified Algorithms for JOSE and COSE
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 March 2024.
+   This Internet-Draft will expire on 22 April 2024.
 
 Copyright Notice
 
@@ -63,19 +63,20 @@ Table of Contents
    2.  Fully-specified Digital Signature Algorithm Identifiers
      2.1.  Elliptic Curve Digital Signature Algorithm (ECDSA)
      2.2.  Edwards-Curve Digital Signature Algorithm (EdDSA)
-   3.  IANA Considerations
-     3.1.  JOSE Algorithms Registrations
-       3.1.1.  Fully-Specified JOSE Algorithm Registrations
-       3.1.2.  Deprecated Polymorphic JOSE Algorithm Registrations
-     3.2.  COSE Algorithms Registrations
-       3.2.1.  Fully-Specified COSE Algorithm Registrations
-       3.2.2.  Deprecated Polymorphic COSE Algorithm Registrations
-     3.3.  Updated Review Instructions for Designated Experts
-   4.  Security Considerations
-   5.  To Do
-   6.  References
-     6.1.  Normative References
-     6.2.  Informative References
+   3.  Key Representations
+   4.  IANA Considerations
+     4.1.  JOSE Algorithms Registrations
+       4.1.1.  Fully-Specified JOSE Algorithm Registrations
+       4.1.2.  Deprecated Polymorphic JOSE Algorithm Registrations
+     4.2.  COSE Algorithms Registrations
+       4.2.1.  Fully-Specified COSE Algorithm Registrations
+       4.2.2.  Deprecated Polymorphic COSE Algorithm Registrations
+     4.3.  Updated Review Instructions for Designated Experts
+   5.  Security Considerations
+   6.  To Do
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
    Appendix A.  Document History
    Acknowledgements
    Authors' Addresses
@@ -199,14 +200,24 @@ Table of Contents
 
                       Table 2: EdDSA Algorithm Values
 
-3.  IANA Considerations
+3.  Key Representations
 
-3.1.  JOSE Algorithms Registrations
+   The key representations for the new fully-specified algorithms
+   defined by this specification are the same as those for the
+   polymorphic algorithms that they replace, other than the alg value,
+   if included.  For instance, the representation for a key used with
+   the Ed25519 algorithm is the same as that specified in [RFC8037],
+   except that the alg value would be Ed25519 rather than EdDSA, if
+   included.
+
+4.  IANA Considerations
+
+4.1.  JOSE Algorithms Registrations
 
    This section registers the following values in the IANA "JSON Web
    Signature and Encryption Algorithms" registry [IANA.JOSE.Algorithms].
 
-3.1.1.  Fully-Specified JOSE Algorithm Registrations
+4.1.1.  Fully-Specified JOSE Algorithm Registrations
 
    *  Algorithm Name: Ed25519
    *  Algorithm Description: EdDSA using Ed25519 curve
@@ -225,7 +236,7 @@ Table of Contents
    *  Reference: Section 2.2 of [[ this specification ]]
    *  Algorithm Analysis Document(s): [RFC8032]
 
-3.1.2.  Deprecated Polymorphic JOSE Algorithm Registrations
+4.1.2.  Deprecated Polymorphic JOSE Algorithm Registrations
 
    The following registration is updated to change its status to
    Deprecated.
@@ -238,12 +249,12 @@ Table of Contents
    *  Reference: Section 3.1 of RFC8037
    *  Algorithm Analysis Document(s): [RFC8032]
 
-3.2.  COSE Algorithms Registrations
+4.2.  COSE Algorithms Registrations
 
    This section registers the following values in the IANA "COSE
    Algorithms" registry [IANA.COSE.Algorithms].
 
-3.2.1.  Fully-Specified COSE Algorithm Registrations
+4.2.1.  Fully-Specified COSE Algorithm Registrations
 
    *  Name: ESP256
    *  Value: TBD (requested assignment -9)
@@ -279,7 +290,7 @@ Table of Contents
    *  Reference: Section 2.2 of this document
    *  Recommended: Yes
 
-3.2.2.  Deprecated Polymorphic COSE Algorithm Registrations
+4.2.2.  Deprecated Polymorphic COSE Algorithm Registrations
 
    The following registrations are updated to change their status to
    Deprecated.
@@ -311,7 +322,7 @@ Table of Contents
    *  Reference: RFC 9053
    *  Recommended: Deprecated
 
-3.3.  Updated Review Instructions for Designated Experts
+4.3.  Updated Review Instructions for Designated Experts
 
    The review instructions for the designated experts for the IANA "JSON
    Web Signature and Encryption Algorithms" registry
@@ -327,7 +338,7 @@ Table of Contents
    [RFC9053] are also updated to add the same additional review
    criterion.
 
-4.  Security Considerations
+5.  Security Considerations
 
    Using fully-specified algorithm identifiers reduces the attack
    surface relative to using polymorphic algorithm identifiers, since it
@@ -336,14 +347,10 @@ Table of Contents
    The security considerations for ECDSA in [RFC7518], for EdDSA in
    [RFC8037], and for ECDSA and EdDSA in [RFC9053] apply.
 
-5.  To Do
+6.  To Do
 
    Future versions of this specification may cover these additional
    topics:
-
-   *  State that key representations for the new fully-specified
-      algorithms are the same as for the polymorphic algorithms that
-      they replaced, other than the alg value, if included.
 
    *  What other polymorphic algorithm registrations have we missed?
 
@@ -352,9 +359,9 @@ Table of Contents
 
    *  Discuss the treatment of EDCH-ES and its ephemeral keys.
 
-6.  References
+7.  References
 
-6.1.  Normative References
+7.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -374,7 +381,7 @@ Table of Contents
               Initial Algorithms", RFC 9053, DOI 10.17487/RFC9053,
               August 2022, <https://www.rfc-editor.org/info/rfc9053>.
 
-6.2.  Informative References
+7.2.  Informative References
 
    [FIDO2]    Bradley, J., Hodges, J., Jones, M., Kumar, A., and J.
               Johan, "Client to Authenticator Protocol (CTAP)", FIDO
@@ -422,6 +429,11 @@ Table of Contents
 Appendix A.  Document History
 
    [[ to be removed by the RFC Editor before publication as an RFC ]]
+
+   -02
+
+   *  Stated that key representations remain the same, other than the
+      alg value.
 
    -01
 
