@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-19T00:27:48.517204+00:00",
+  "timestamp": "2023-10-22T00:29:55.165926+00:00",
   "repo": "selfissued/draft-jones-jose-fully-specified-algorithms",
   "labels": [
     {
@@ -50,5 +50,90 @@
     }
   ],
   "issues": [],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOKNEhZc5daTRK",
+      "title": "Key representations remain the same",
+      "url": "https://github.com/selfissued/draft-jones-jose-fully-specified-algorithms/pull/1",
+      "state": "MERGED",
+      "author": "selfissued",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Addresses a To Do point",
+      "createdAt": "2023-10-20T18:24:42Z",
+      "updatedAt": "2023-10-20T19:55:45Z",
+      "baseRepository": "selfissued/draft-jones-jose-fully-specified-algorithms",
+      "baseRefName": "main",
+      "baseRefOid": "a42d36f66dee71ecd14951571cd9f98ba5d7584f",
+      "headRepository": "selfissued/draft-jones-jose-fully-specified-algorithms",
+      "headRefName": "mbj-keys",
+      "headRefOid": "e78c1437ac9bc3e17f37ea6423540dba9a9e924b",
+      "closedAt": "2023-10-20T19:55:45Z",
+      "mergedAt": "2023-10-20T19:55:45Z",
+      "mergedBy": "OR13",
+      "mergeCommit": {
+        "oid": "e17b62461fab344aaf30c3210c38a7194f233722"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKNEhZc5kx_Ij",
+          "commit": {
+            "abbreviatedOid": "e78c143"
+          },
+          "author": "OR13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-20T19:55:35Z",
+          "updatedAt": "2023-10-20T19:55:35Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOKNEhZc5da1U1",
+      "title": "Discussed algorithms not updated",
+      "url": "https://github.com/selfissued/draft-jones-jose-fully-specified-algorithms/pull/2",
+      "state": "MERGED",
+      "author": "selfissued",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "This addresses the remaining To Do items.",
+      "createdAt": "2023-10-20T20:37:59Z",
+      "updatedAt": "2023-10-20T20:47:18Z",
+      "baseRepository": "selfissued/draft-jones-jose-fully-specified-algorithms",
+      "baseRefName": "main",
+      "baseRefOid": "e17b62461fab344aaf30c3210c38a7194f233722",
+      "headRepository": "selfissued/draft-jones-jose-fully-specified-algorithms",
+      "headRefName": "mbj-not-updated",
+      "headRefOid": "5c17795c043d0237956f5a992ec789486ea73b0c",
+      "closedAt": "2023-10-20T20:47:18Z",
+      "mergedAt": "2023-10-20T20:47:18Z",
+      "mergedBy": "OR13",
+      "mergeCommit": {
+        "oid": "80ad4156ba579480837d196764823b3f840cf7f2"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKNEhZc5kyM8g",
+          "commit": {
+            "abbreviatedOid": "5c17795"
+          },
+          "author": "OR13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-20T20:46:51Z",
+          "updatedAt": "2023-10-20T20:46:51Z",
+          "comments": []
+        }
+      ]
+    }
+  ]
 }
